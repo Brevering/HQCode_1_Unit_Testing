@@ -2,7 +2,6 @@
 {
     using System;
     using NUnit.Framework;
-    //using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestFixture]
     public class StudentTests
