@@ -1,94 +1,91 @@
 ﻿namespace School.Tests
 {
     using System;
+    using NUnit.Framework;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    [TestFixture]
     public class CourseTests
-    {
-        private const int MaximumNumberOfStudentsInACourse = 29;
+    {        
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]        
         public void CourseShouldThrowAnArgumentExceptionIfTitleIsNull()
         {
-            Course testCourse = new Course(null);
+            Assert.That(() => new Course(null), Throws.TypeOf<ArgumentException>());           
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void CourseShouldThrowAnArgumentExceptionIfTitleIsEmpty()
         {
-            Course testCourse = new Course(string.Empty);
+            Assert.That(() => new Course(string.Empty), Throws.TypeOf<ArgumentException>());
         }
 
-        [TestMethod]
+        [Test]
         public void CourseListOfStudentsAndStudentListOfCoursesShouldBeUpdatedProperlyWhenANewStudentIsAdded()
         {
             Course testCourse = new Course("TestCourse");
-            Student testStudent = new Student("First", "Last");
+            Student testStudent = new Student("Ivan", "Ivanov");
             testCourse.AddStudent(testStudent);
 
-            Assert.IsTrue(testCourse.StudentsList.Contains(testStudent), "List of students should contain the added student");
-            Assert.IsTrue(testStudent.Courses.Contains(testCourse), "List of courses should contain the added course");
+            Assert.IsTrue(testCourse.StudentsList.Contains(testStudent));
+            Assert.IsTrue(testStudent.Courses.Contains(testCourse));
         }
 
-        [TestMethod]
+        [Test]
         public void CourseListOfStudentsAndStudentListOfCoursesShouldBeUpdatedProperlyWhenAStudentIsRemoved()
         {
             Course testCourse = new Course("TestCourse");
-            Student testStudent = new Student("First", "Last");
+            Student testStudent = new Student("Ivan", "Ivanov");
             testCourse.AddStudent(testStudent);
             testCourse.RemoveStudent(testStudent);
 
-            Assert.IsFalse(testCourse.StudentsList.Contains(testStudent), "The removed student should not be in the list");
-            Assert.IsFalse(testStudent.Courses.Contains(testCourse), "The course should not be in the list");
+            Assert.IsFalse(testCourse.StudentsList.Contains(testStudent));
+            Assert.IsFalse(testStudent.Courses.Contains(testCourse));
         }
 
-        [TestMethod]
+        [Test]
         public void CourseTitleShouldBeSetCorrectlyWhenValidArgumentIsPassed()
         {
             Course testCourse = new Course("Valid Title");
-            Assert.AreEqual("Valid Title", testCourse.Title, "Valid title should be set correctly");
+            Assert.AreEqual("Valid Title", testCourse.Title);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
+        [Test]        
         public void CourseShouldThrowAnApplicationExceptionWhenNumberOfSignedStudentsExceedsTheLimit()
         {
-            Course testCourse = new Course("Test");
-            for (int i = 0; i <= MaximumNumberOfStudentsInACourse; i++)
+            Course testCourse = new Course("TestCourse");
+            for (int i = 0; i < 29; i++)
             {
-                Student testStudent = new Student("valid", "valid");
+                Student testStudent = new Student("Ivan", "Ivanov");
                 testCourse.AddStudent(testStudent);
             }
+            Student lastStudent = new Student("Causes", "Exception");
+            
+            Assert.That(() => testCourse.AddStudent(lastStudent), Throws.TypeOf<ApplicationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
+        [Test]        
         public void CourseShouldThrowAnApplicationExceptionWhenTheSameStudentIsAddedMoreThanOnce()
         {
-            Course testCourse = new Course("Test");
-            Student testStudent = new Student("a", "b");
+            Course testCourse = new Course("TestCourse");
+            Student testStudent = new Student("Ivan", "Ivanov");
             testCourse.AddStudent(testStudent);
-            testCourse.AddStudent(testStudent);
+
+            Assert.That(() => testCourse.AddStudent(testStudent), Throws.TypeOf<ApplicationException>());
+            
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]        
         public void ShouldThrowAnArgumentNullExceptionWhenNullIsPassedToAddStudentMethod()
         {
-            Course testCourse = new Course("Test");
-            testCourse.AddStudent(null);
+            Course testCourse = new Course("TestCourse");
+            Assert.That(() => testCourse.AddStudent(null), Throws.TypeOf<ArgumentNullException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void ShouldThrowAnArgumentNullExceptionWhenNullIsPassedToRemoveStudentMethod()
         {
-            Course testCourse = new Course("Test");
-            testCourse.RemoveStudent(null);
+            Course testCourse = new Course("TestCourse");
+            Assert.That(() => testCourse.RemoveStudent(null), Throws.TypeOf<ArgumentNullException>());
         }
     }
 }

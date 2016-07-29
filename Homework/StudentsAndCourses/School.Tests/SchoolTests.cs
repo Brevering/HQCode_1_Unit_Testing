@@ -1,21 +1,21 @@
 ﻿namespace School.Tests
 {
     using System;
+    using NUnit.Framework;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    [TestFixture]
     public class SchoolTests
-    {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void SchoolShouldThrowAnArgumentOutOfRangeExceptionIfUniqueStudentNumberIsLessThan10000() => School.UniqueNumber = 9999;
+    {        
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void SchoolShouldThrowAnArgumentOutOfRangeExceptionIfUniqueStudentNumberIsGreaterThan99999() => School.UniqueNumber = 100000;
+        [TestCase (9999)]
+        [TestCase (100000)]
+        public void School_ShouldThrowArgumentOutOfRangeException_IfUniqueStudentNumberIsLessThan10000OrGreaterThan99999(int nbr)
+        {
+            Assert.That(() => School.UniqueNumber = nbr, Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
 
-        [TestMethod]
+
+        [Test]
         public void SchoolShouldReturnCorrectUniqueIdWhenItIsSetCorrectly()
         {
             School.UniqueNumber = 10000;

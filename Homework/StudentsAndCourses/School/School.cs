@@ -6,7 +6,6 @@
     {
         private static int uniqueNumber = 10000;
 
-        /// <exception cref="ArgumentOutOfRangeException" accessor="set">Student number must be between 10000 and 99999</exception>
         public static int UniqueNumber
         {
             get
@@ -18,7 +17,7 @@
             {
                 if (value < 10000 || value > 99999)
                 {
-                    throw new ArgumentOutOfRangeException("Student " + "number must be between 10000 and 99999");
+                    throw new ArgumentOutOfRangeException("Student number must be between 10000 and 99999");
                 }
 
                 uniqueNumber = value;

@@ -16,8 +16,7 @@
         }
 
         public ICollection<Student> StudentsList => new List<Student>(this.studentsList);
-
-        /// <exception cref="ArgumentException" accessor="set">Course title cannot be null or empty</exception>
+        
         public string Title
         {
             get
@@ -34,9 +33,7 @@
                 this.title = value;
             }
         }
-
-        /// <exception cref="ApplicationException">Students in a class must be less than 30 and the same
-        /// student cannot be added more than once</exception>
+        
         public void AddStudent(Student student)
         {
             if (student == null)
